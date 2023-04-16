@@ -1,0 +1,3 @@
+
+//this will be just temporary, use env next time
+export const SECRET_KEY="AD18A9D67484A518805C0F13E096EC78B5DE70DAEE3BA9A7F37DA6BCBDC9A785"
