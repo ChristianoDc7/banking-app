@@ -76,7 +76,7 @@ router.post(OneUserRoutes, async function (req: RequestWithPayload, res, next) {
     }
 });
 
-/* Update sets */
+/* Update user*/
 router.put(OneUserIdRoutes, async (req: RequestWithPayload, res, next) => {
     if (AdminMiddleware(req)) {
         try {
@@ -108,7 +108,7 @@ router.delete(OneUserRoutes + '/:id', async (req, res, next) => {
         await DeleteUser(parseInt(req.params.id))
         res.json("User deleted");
     } catch (err) {
-        console.error(`Error while deleting programming languages `, err);
+        console.error(`Error while deleting users`, err);
         next(err);
     }
 });
