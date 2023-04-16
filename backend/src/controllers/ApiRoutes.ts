@@ -5,3 +5,4 @@ export const UserRoutes = "/users";
 export const OneUserRoutes = "/user";
 
 export const TransactionRoutes = "/transactions";
+export const TransactionRoute = "/transaction";

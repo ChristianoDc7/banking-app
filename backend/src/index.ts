@@ -7,6 +7,7 @@ import { verifyToken } from './auth/Auth';
 import { BankingDataSource } from './db/DataSources';
 import { verifyUSer } from './repositories/LoginRepository';
 import UserController from './controllers/UserControllers';
+import TransactionController from './controllers/TransactionController';
 
 const app: Application = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(verifyToken);
 BankingDataSource.initialize()
 
 app.use(UserController);
+app.use(TransactionController);
 
 // Login route
 app.post('/login', verifyUSer);
