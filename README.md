@@ -5,7 +5,7 @@ This is a banking application with a backend made using Node.js, Typescript, Typ
 
 ## Installation
 To run the application, follow the steps below:
-1. Clone the repository using `git clone <repository-url>`
+1. Clone the repository using `git clone https://github.com/ChristianoDc7/banking-app.git`
 2. Navigate to the `backend` directory using the command line: `cd backend`
 3. Install the dependencies using Yarn: `yarn install`
 4. Run the app using `yarn run dev` and that's all
