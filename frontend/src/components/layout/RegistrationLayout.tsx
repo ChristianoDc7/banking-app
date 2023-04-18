@@ -1,10 +1,11 @@
-import { Button } from 'antd'
+import { Button, Card } from 'antd'
 import React from 'react'
+import { Outlet } from 'react-router-dom'
 
 const RegistrationLayout = () => {
     return (
-        <div className="App">
-            <Button type='primary'  >Hello</Button>
+        <div className='full-height full-width center-flex'>
+            <Outlet />
         </div>
     )
 }

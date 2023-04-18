@@ -58,7 +58,7 @@ const MainLayout: React.FC = () => {
                     <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>User</Breadcrumb.Item>
                         <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                    </Breadcrumb>
+                    </Breadcrumb> 
                     <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
                         <Outlet />
                     </div>

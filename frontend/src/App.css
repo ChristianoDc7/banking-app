@@ -1,0 +1,39 @@
+#root {
+  width: 100%;
+  height: 100%
+}
+
+
+.full-height {
+  height: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.center-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.center-align {
+  display: flex;
+  align-items: center
+}
+
+.center-justify {
+  display: flex;
+  justify-content: center;
+}
+
+.justify-beetween {
+  display: flex;
+  justify-content: space-between;
+}
