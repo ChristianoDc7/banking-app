@@ -1,4 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Cookies } from 'react-cookie';
+
 
 const backendApiUrl = "http://localhost:3000"
 
