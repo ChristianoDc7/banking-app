@@ -5,13 +5,16 @@ import { useLogin } from '../../data/hooks/auth/useLogin'
 import { useFormData } from '../../utils/useFormData'
 import { LoginPayload } from '../../types/User'
 import { useNavigate } from 'react-router-dom'
+import { PageRoutes } from '../../config/PageRoutes'
+import { useRuntimeCookies } from '../../data/hooks/env/useRuntimeCookies'
+import { setTokenCookie } from '../../data/services/AuthCookies'
 
 const Login = () => {
     const navigate = useNavigate()
     const [step, setStep] = React.useState(1)
     const userNameField = useMemo(() => step === 1, [step])
     const pinField = useMemo(() => step === 2, [step])
-
+    const {setEnv} = useRuntimeCookies()
     const loginMutation = useLogin()
 
     const { formData, getTextFieldProps, setFormData } = useFormData<LoginPayload>({
@@ -31,7 +34,10 @@ const Login = () => {
 
     useEffect(()=>{
         if(loginMutation.isSuccess){
-            navigate('/dashboard')
+            setEnv(loginMutation.data)
+            setTokenCookie(loginMutation.data?.token || '')
+            loginMutation.reset()
+            navigate(PageRoutes.DASHBOARD)
         }
     },[loginMutation.isSuccess])
 

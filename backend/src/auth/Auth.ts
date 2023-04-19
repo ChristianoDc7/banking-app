@@ -28,9 +28,12 @@ export function verifyToken(req: Request & { payload?: any }, res: Response, nex
 	if (authHeader) {
 		const token = authHeader.split(' ')[1];
 		jwt.verify(token, SECRET_KEY, (err, payload) => {
-			if (err) {
-				console.log(err);
+			if ((payload as any).exp < Date.now() / 1000) {
+				res.status(499).send('Token expired');
+				return;
+			} else if (err) {
 				res.status(401).send('Invalid token');
+				return;
 			} else {
 				req.payload = payload;
 				next();
@@ -46,12 +49,12 @@ export const verifyAuth = (req: RequestWithPayload, res: Response, next: NextFun
 		next();
 		return;
 	}
-	
+
 	if (AdminRoutes.some(path => matchPath(req.path, path)) && AdminMiddleware(req)) {
 		next();
 		return;
 	}
-	
+
 	if (OwnerUserRoutes.some(path => matchPath(req.path, path))) {
 		next();
 		return;

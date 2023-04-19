@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from 'bcrypt';
 import { generateToken } from "../auth/Auth";
 import { userRepository } from "./UserRepositories";
+import _ from "lodash";
 
 export const verifyUSer = async (req: Request, res: Response, next: NextFunction) => {
 	const { username, password } = req.body;
@@ -31,7 +32,7 @@ export const verifyUSer = async (req: Request, res: Response, next: NextFunction
 			}
 
 			const token = generateToken(userFound);
-			res.json({ token });
+			res.json({ token, ..._.omit(userFound, "password") });
 		});
 
 	}

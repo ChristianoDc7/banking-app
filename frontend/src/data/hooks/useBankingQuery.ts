@@ -22,6 +22,7 @@ export const useBankingQuery = <TData=Record<string, any>, TError = unknown>(
 
     return {
         ...queryInstance,
+        data: (queryInstance.data as any)?.data,
         invalidateQuery,
         removeQuery,
         resetQuery,

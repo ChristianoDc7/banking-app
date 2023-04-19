@@ -9,3 +9,7 @@ export type TUser = {
     role?: number
     password?: string
 }
+
+export type TLoginReturn = TUser & {
+    token?: string
+}

@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Cookies } from 'react-cookie';
-
+import { RUNTIME_COOKIE_KEYS, deleteTokenCookie, getTokenCookie } from './AuthCookies';
+import { PageRoutes } from '../../config/PageRoutes';
+import Cookies from 'js-cookie'
 
 const backendApiUrl = "http://localhost:3000"
 
@@ -9,7 +10,7 @@ const HttpModule: AxiosInstance = axios.create({
   baseURL: backendApiUrl,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    Authorization: `Bearer ${getTokenCookie()}`,
   },
 });
 
@@ -21,8 +22,10 @@ HttpModule.interceptors.response.use(
   async (error) => {
 
     // If the access token has expired, redirect to login
-    if (error.response.status === 401 && error.response.data.code === 'TOKEN_EXPIRED') {
-        window.location.href = '/login';
+    if (error.response.status === 499 && error.response.data.code === 'TOKEN_EXPIRED') {
+      Cookies.remove(RUNTIME_COOKIE_KEYS)
+      deleteTokenCookie();
+      window.location.href = PageRoutes.LOGIN;
     }
 
     return Promise.reject(error);
