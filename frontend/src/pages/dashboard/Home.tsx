@@ -11,24 +11,25 @@ const Home = () => {
 
 	const computedTransactions = useMemo(() => data?.sort((a, b) => moment(b.date).diff(moment(a.date))), [data])
 
-	const actualAmount = 50000;
-	let runningTotal = actualAmount;
+	const transactionsWithAmounts = useMemo(() => {
+		let actualAmount = 50000;
 
-	const transactionsWithAmounts = computedTransactions?.map((transaction, i) => {
-		const previousTransac = computedTransactions?.[i-1];
-		if (i === 0) {
-			return { ...transaction, remainingAmount: actualAmount };
-		}
-		else {
-			if (env?.username === previousTransac?.receiverName) {
-				runningTotal += previousTransac?.amount || 0;
-			} else {
-				runningTotal -= previousTransac?.amount || 0;
+		return computedTransactions?.map((transaction, i) => {
+			const prevTransac = computedTransactions?.[i - 1] || {};
+			if (i === 0) {
+				return { ...transaction, remainingAmount: actualAmount };
 			}
-		}
-
-		return { ...transaction, remainingAmount: runningTotal };
-	});
+			else {
+				if (env?.username === prevTransac?.receiverName) {
+					actualAmount -= prevTransac?.amount || 0;
+				} else {
+					actualAmount += prevTransac?.amount || 0;
+				}
+			}
+			
+			return { ...transaction, remainingAmount: actualAmount };
+		})
+	}, [computedTransactions])
 
 	return (
 		<div style={{ color: 'black' }}>
