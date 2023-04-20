@@ -4,14 +4,23 @@ import { TransactionEntities } from "../entities/TransactionEntities";
 import { userRepository } from "./UserRepositories";
 import { UserEntities } from "../entities/UserEntities";
 import { isAdmin } from "../utils/Utils";
+import _ from "lodash";
 
 const TransactionRepository = BankingDataSource.getRepository(TransactionEntities);
 
 export const getAllTransactions = async (id: number) => {
-    if(isAdmin(id)){
-        return await TransactionRepository.find();
-    }
-    return await TransactionRepository.findBy({ senderId: id });
+    const users = await userRepository.find();
+    const transactions = isAdmin(id) ? await TransactionRepository.find() : await TransactionRepository.findBy({ senderId: id });
+    
+    return transactions.map(transaction => {
+        const sender = users.find(user => user.id === transaction.senderId);
+        const receiver = users.find(user => user.id === transaction.receiverId);
+        return {
+            ..._.omit(transaction, ["senderId", "receiverId"]),
+            senderName: sender?.username,
+            receiverName: receiver?.username
+        }
+    })
 }
 
 export const createTransaction = async (transaction: TransactionEntities) => {

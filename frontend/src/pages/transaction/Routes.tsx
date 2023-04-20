@@ -2,12 +2,12 @@ import React from "react";
 import { RouteProps } from "../../config/Route";
 import { PageRoutes } from "../../config/PageRoutes";
 
-const Users = React.lazy(() => import("./UserList"));
+const TransactionList = React.lazy(() => import("./TransactionDashboard"));
 
 const Routes :  RouteProps[] = [
     {
-        path: PageRoutes.USERS,
-        element : <Users/>,
+        path: PageRoutes.TRANSACTIONS,
+        element : <TransactionList />,
     }
 ]
 

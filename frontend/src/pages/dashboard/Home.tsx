@@ -1,11 +1,45 @@
-import React from 'react'
+import React, { useMemo } from 'react'
+import { useGetTransactions } from '../../data/hooks/transactions/useGetTransactions'
+import { useRuntimeCookies } from '../../data/hooks/env/useRuntimeCookies'
+import { Area } from '@ant-design/plots';
+import moment from 'moment';
+
 
 const Home = () => {
-  return (
-    <div>
-        Here to se the world
-    </div>
-  )
+	const { env } = useRuntimeCookies()
+	const { data } = useGetTransactions()
+
+	const computedTransactions = useMemo(() => data?.sort((a, b) => moment(b.date).diff(moment(a.date))), [data])
+
+	const actualAmount = 50000;
+	let runningTotal = actualAmount;
+
+	const transactionsWithAmounts = computedTransactions?.map((transaction, i) => {
+		const previousTransac = computedTransactions?.[i-1];
+		if (i === 0) {
+			return { ...transaction, remainingAmount: actualAmount };
+		}
+		else {
+			if (env?.username === previousTransac?.receiverName) {
+				runningTotal += previousTransac?.amount || 0;
+			} else {
+				runningTotal -= previousTransac?.amount || 0;
+			}
+		}
+
+		return { ...transaction, remainingAmount: runningTotal };
+	});
+
+	return (
+		<div style={{ color: 'black' }}>
+
+			{
+				transactionsWithAmounts?.map(item => (
+					<>{item.date} ---- {item.remainingAmount} --- {item.amount}<br /></>
+				))
+			}
+		</div>
+	)
 }
 
 export default Home

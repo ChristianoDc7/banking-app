@@ -9,4 +9,4 @@ export const PageRoutes = {
 }
 
 export const AdminRoutes = [PageRoutes.USERS];
-export const LoggedInRoutes = [PageRoutes.DASHBOARD, PageRoutes.PROFILE, PageRoutes.TRANSACTIONS, PageRoutes.USERS];
+export const LoggedInRoutes = [PageRoutes.DASHBOARD, PageRoutes.PROFILE, PageRoutes.TRANSACTIONS, PageRoutes.USERS, PageRoutes.HOME];

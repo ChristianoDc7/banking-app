@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 export function setTokenCookie(value: string) {
-	Cookies.set(TOKEN_COOKIE_KEYS, value, { httpOnly: true, path: "/" });
+	Cookies.set(TOKEN_COOKIE_KEYS, value);
 }
 
 export function getTokenCookie() {

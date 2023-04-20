@@ -33,7 +33,7 @@ const Login = () => {
     };
 
     useEffect(()=>{
-        if(loginMutation.isSuccess){
+        if(loginMutation.isSuccess && loginMutation.data){
             setEnv(loginMutation.data)
             setTokenCookie(loginMutation.data?.token || '')
             loginMutation.reset()

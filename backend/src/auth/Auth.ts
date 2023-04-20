@@ -28,7 +28,7 @@ export function verifyToken(req: Request & { payload?: any }, res: Response, nex
 	if (authHeader) {
 		const token = authHeader.split(' ')[1];
 		jwt.verify(token, SECRET_KEY, (err, payload) => {
-			if ((payload as any).exp < Date.now() / 1000) {
+			if ((payload as any)?.exp < Date.now() / 1000) {
 				res.status(499).send('Token expired');
 				return;
 			} else if (err) {
