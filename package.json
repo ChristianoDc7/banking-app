@@ -4,7 +4,7 @@
   "repository": "https://github.com/ChristianoDc7/banking-app.git",
   "scripts": {
     "dev:backend": "cd ./backend && yarn dev",
-    "build:backend": "cd ./backend && yarn install && ts-node src/index.ts",
+    "build:backend": "yarn install && ts-node src/index.ts",
     "dev:frontend": "cd ./frontend && yarn dev",
     "build:frontend": "cd ./backend && yarn install && yarn run build"
   },
