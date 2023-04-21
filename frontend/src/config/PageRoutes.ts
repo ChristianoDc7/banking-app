@@ -3,6 +3,7 @@ export const PageRoutes = {
     LOGIN: "/login",
     DASHBOARD: "/dashboard",
     PROFILE: "/profile",
+    WITHDRAW: "/withdraw",
     USERS: "/users",
     TRANSACTIONS: "/transactions",
     LOGOUT: "/logout"

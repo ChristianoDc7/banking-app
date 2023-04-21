@@ -16,7 +16,7 @@ export const getAllTransactions = async (id: number) => {
         const sender = users.find(user => user.id === transaction.senderId);
         const receiver = users.find(user => user.id === transaction.receiverId);
         return {
-            ..._.omit(transaction, ["senderId", "receiverId"]),
+            ...transaction,
             senderName: sender?.username,
             receiverName: receiver?.username
         }

@@ -29,8 +29,9 @@ HttpModule.interceptors.response.use(
 		return response;
 	},
 	async (error) => {
+		console.log(error.response)
 		// If the access token has expired, redirect to login
-		if (error.response.status === 499 && error.response.data.code === 'TOKEN_EXPIRED') {
+		if (error.response.status === 499) {
 			Cookies.remove(RUNTIME_COOKIE_KEYS)
 			deleteTokenCookie();
 			window.location.href = PageRoutes.LOGIN;

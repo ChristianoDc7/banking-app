@@ -3,6 +3,8 @@ export type TTransaction = {
     description?: string;
     receiverName?: string;
     senderName?: string;
+    senderId?: number;
+    receiverId?: number;
     amount?: number;
     date?: string;
 }

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import {DesktopOutlined,PieChartOutlined,TeamOutlined,UserOutlined, LogoutOutlined} from '@ant-design/icons';
+import {DesktopOutlined,PieChartOutlined,TeamOutlined,UserOutlined, LogoutOutlined, SwapOutlined} from '@ant-design/icons';
 import {  MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ function getItem(label: React.ReactNode,key: React.Key , link: string,icon?: Rea
 
 const MenuItems: MenuItem[] = [
     getItem('Dashboard', '1', PageRoutes.DASHBOARD, <PieChartOutlined />),
+    getItem('Transfer', 'wth1',PageRoutes.WITHDRAW, <SwapOutlined />),
     getItem('Transactions', '2',PageRoutes.TRANSACTIONS, <DesktopOutlined />),
     getItem('Utilisateurs', 'sub2',PageRoutes.USERS, <TeamOutlined />),
     getItem('Logout', '9',PageRoutes.LOGOUT, <LogoutOutlined />),
@@ -47,7 +48,7 @@ const MainLayout: React.FC = () => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-                <div style={{ height: 32, margin: 16, background: 'url("chrys.png")' }} />
+                <div style={{ height: 32, margin: 16, backgroundImage: "url('./chrys.png')"}} />
                 <Menu theme="dark" defaultSelectedKeys={[sideBarKey]} mode="inline"  items={MenuItems}  onSelect={e => provideLink(e.key)}/>
             </Sider>
             <Layout className="site-layout">

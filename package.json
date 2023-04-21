@@ -1,0 +1,11 @@
+{
+  "name": "banking-app",
+  "version": "1.0.0",
+  "repository": "https://github.com/ChristianoDc7/banking-app.git",
+  "scripts": {
+    "dev:backend": "cd ./backend && yarn dev",
+    "dev:frontend": "cd ./frontend && yarn dev"
+  },
+  "author": "Christiano <Christianod97@gmail.com>",
+  "license": "MIT"
+}

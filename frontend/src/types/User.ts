@@ -8,6 +8,7 @@ export type TUser = {
     username?: string
     role?: number
     password?: string
+    amount?: number;
 }
 
 export type TLoginReturn = TUser & {
