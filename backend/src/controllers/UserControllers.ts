@@ -10,7 +10,7 @@ const router = express.Router();
 /* GET all users. */
 router.get(UserRoutes, async function (req: RequestWithPayload, res, next) {
     try {
-        const users = await GetAllUsers()
+        const users = await GetAllUsers(req)
         if (!!users) {
             res.json(users);
             return;
@@ -81,7 +81,7 @@ router.put(OneUserIdRoutes, async (req: RequestWithPayload, res, next) => {
     if (AdminMiddleware(req)) {
         try {
             const result = await UpdateUser(req.body, parseInt(req.params.id))
-            if(!_.isEmpty(result)){
+            if (!_.isEmpty(result)) {
                 res.json("User updated");
                 return;
             }
@@ -97,19 +97,24 @@ router.put(OneUserIdRoutes, async (req: RequestWithPayload, res, next) => {
 });
 
 /* Delete one user */
-router.delete(OneUserRoutes + '/:id', async (req, res, next) => {
-    try {
-        const user = await GetUser(parseInt(req.params.id));
+router.delete(OneUserIdRoutes, async (req, res, next) => {
+    if (AdminMiddleware(req)) {
+        try {
+            const user = await GetUser(parseInt(req.params.id));
 
-        if (!user) {
-            res.status(404).send('User not found');
-            return;
+            if (!user) {
+                res.status(404).send('User not found');
+                return;
+            }
+            await DeleteUser(parseInt(req.params.id))
+            res.json("User deleted");
+        } catch (err) {
+            console.error(`Error while deleting users`, err);
+            next(err);
         }
-        await DeleteUser(parseInt(req.params.id))
-        res.json("User deleted");
-    } catch (err) {
-        console.error(`Error while deleting users`, err);
-        next(err);
+    } else {
+        res.status(403).send('You are not allowed to update this informations');
+        return;
     }
 });
 

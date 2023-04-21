@@ -2,6 +2,8 @@ import { BankingDataSource } from "../db/DataSources";
 import { UserEntities } from "../entities/UserEntities";
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
+import { RequestWithPayload } from "../types/userTypes";
+import { isAdmin } from "../utils/Utils";
 
 
 export const userRepository = BankingDataSource.getRepository(UserEntities);
@@ -39,7 +41,7 @@ export const GetUser = async (id: number, auth = false) => {
     return _.omit(user, "password")
 }
 
-export const GetAllUsers = async () => {
+export const GetAllUsers = async (req: RequestWithPayload) => {
     const users = await userRepository.find();
-    return users?.map(user => _.omit(user, "password"))
+    return users?.map(user => _.omit(user, isAdmin(req?.payload?.id || 0) ? "password" : ["password", "amount"]))
 }

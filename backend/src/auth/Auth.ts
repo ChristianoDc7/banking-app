@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { UserEntities } from "../entities/UserEntities";
 import { SECRET_KEY } from "./AuthConfig";
-import { AdminRoutes, LoginRoutes, OwnerAccountRoutes, OwnerUserRoutes } from "../controllers/ApiRoutes";
+import { AdminRoutes, LoginRoutes, OwnerAccountRoutes, OwnerUserRoutes, PublicRoutes } from "../controllers/ApiRoutes";
 import { AdminMiddleware, OwnAccountMiddleware, OwnerMiddleware, matchPath } from "../utils/Utils";
 
 // Function to generate JWT token
@@ -55,7 +55,7 @@ export const verifyAuth = (req: RequestWithPayload, res: Response, next: NextFun
 		return;
 	}
 
-	if (OwnerUserRoutes.some(path => matchPath(req.path, path))) {
+	if (OwnerUserRoutes.some(path => matchPath(req.path, path)) || PublicRoutes.some(path => matchPath(req.path, path))) {
 		next();
 		return;
 	}
