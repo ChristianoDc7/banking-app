@@ -8,3 +8,9 @@ export type TTransaction = {
     amount?: number;
     date?: string;
 }
+
+export type TTransactionInput = {
+    description?: string;
+    receiverId?: number;
+    amount?: number;
+}

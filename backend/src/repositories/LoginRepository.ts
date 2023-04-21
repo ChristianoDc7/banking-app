@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { generateToken } from "../auth/Auth";
 import { userRepository } from "./UserRepositories";
 import _ from "lodash";
+import { RequestWithPayload } from "../types/userTypes";
 
 export const verifyUSer = async (req: Request, res: Response, next: NextFunction) => {
 	const { username, password } = req.body;
@@ -20,14 +21,14 @@ export const verifyUSer = async (req: Request, res: Response, next: NextFunction
 		}
 
 		bcrypt.compare(password, userFound.password, (err, match) => {
-			if (err) {
-				console.log(err);
-				res.status(500).send('Error comparing password');
+			if (!match) {
+				res.status(401).send('Invalid username or password');
 				return;
 			}
 
-			if (!match) {
-				res.status(401).send('Invalid username or password');
+			if (err) {
+				console.log(err);
+				res.status(500).send('Error comparing password');
 				return;
 			}
 
@@ -36,4 +37,32 @@ export const verifyUSer = async (req: Request, res: Response, next: NextFunction
 		});
 
 	}
+}
+
+export const checkPassword = async (req: RequestWithPayload, res: Response) => {
+	let isOk = false
+	const userFound = await userRepository.findOneBy({ id: req?.payload?.id })
+
+	if (!userFound) {
+		res.status(401).send('Invalid password');
+		return;
+	}
+
+	await bcrypt.compare(req.body?.password, userFound.password, (err, match) => {
+		if (!match) {
+			res.status(401).send('Invalid password');
+			return;
+		}
+
+		if (err) {
+			console.log(err);
+			res.status(500).send('Error comparing password');
+			return;
+		}
+
+		res.json(true);
+		isOk = true
+		return;
+	});
+	return isOk
 }

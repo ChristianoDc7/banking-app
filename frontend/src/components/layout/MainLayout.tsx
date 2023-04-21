@@ -6,6 +6,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { Header } from './Header';
 import { useRuntimeCookies } from '../../data/hooks/env/useRuntimeCookies';
 import { PageRoutes } from '../../config/PageRoutes';
+import { isAdmin } from '../../utils/Utils';
 
 const { Content, Footer, Sider } = Layout;
 
@@ -19,7 +20,7 @@ const MenuItems: MenuItem[] = [
     getItem('Dashboard', '1', PageRoutes.DASHBOARD, <PieChartOutlined />),
     getItem('Transfer', 'wth1',PageRoutes.WITHDRAW, <SwapOutlined />),
     getItem('Transactions', '2',PageRoutes.TRANSACTIONS, <DesktopOutlined />),
-    getItem('Utilisateurs', 'sub2',PageRoutes.USERS, <TeamOutlined />),
+    ...(isAdmin() ? [getItem('Utilisateurs', 'sub2', PageRoutes.USERS, <TeamOutlined />)]: []),
     getItem('Logout', '9',PageRoutes.LOGOUT, <LogoutOutlined />),
 ];
 

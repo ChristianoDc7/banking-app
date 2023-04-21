@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input } from 'antd'
+import { App, Button, Card, Form, Input } from 'antd'
 import React, { useEffect, useMemo } from 'react'
 import PinInput from 'react-pin-input'
 import { useLogin } from '../../data/hooks/auth/useLogin'
@@ -16,6 +16,7 @@ const Login = () => {
     const pinField = useMemo(() => step === 2, [step])
     const {setEnv} = useRuntimeCookies()
     const loginMutation = useLogin()
+    const {  message } = App.useApp();
 
     const { formData, getTextFieldProps, setFormData } = useFormData<LoginPayload>({
         formData: {
@@ -34,12 +35,21 @@ const Login = () => {
 
     useEffect(()=>{
         if(loginMutation.isSuccess && loginMutation.data){
+            message.success("Login Successful")
             setEnv(loginMutation.data)
             setTokenCookie(loginMutation.data?.token || '')
             loginMutation.reset()
             navigate(PageRoutes.DASHBOARD)
         }
     },[loginMutation.isSuccess])
+
+    useEffect(()=>{
+        if(loginMutation.isError){
+            message.error((loginMutation.error as any)?.response?.data)
+            setStep(1)
+            loginMutation.reset()
+        }
+    },[loginMutation.isError])
 
     return (
         <Card title={userNameField ? "Please login with your username" : "Enter your pin"} style={{ width: 300 }}>

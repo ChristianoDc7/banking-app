@@ -11,7 +11,7 @@ const TransactionDashboard = () => {
 	const { data } = useGetTransactions()
 
 	return (
-		<Table columns={columns} dataSource={data} />
+		<Table columns={columns} dataSource={data?.sort((a, b) => moment(b.date).diff(moment(a.date)))} />
 	)
 }
 

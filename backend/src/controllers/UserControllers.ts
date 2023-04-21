@@ -1,9 +1,10 @@
 import express, { Request } from "express";
-import { OneUserIdRoutes, OneUserRoutes, UserRoutes } from "./ApiRoutes";
+import { OneUserIdRoutes, OneUserRoutes, UserRoutes, checkPasswordRoute } from "./ApiRoutes";
 import { CreateUser, DeleteUser, GetAllUsers, GetUser, UpdateUser } from "../repositories/UserRepositories";
 import _ from "lodash";
 import { RequestWithPayload, RequestWithUser } from "../types/userTypes";
 import { AdminMiddleware, OwnerMiddleware, isAdmin, isOwner, verifyUserCreatePayload } from "../utils/Utils";
+import { checkPassword } from "../repositories/LoginRepository";
 
 const router = express.Router();
 
@@ -115,6 +116,23 @@ router.delete(OneUserIdRoutes, async (req, res, next) => {
     } else {
         res.status(403).send('You are not allowed to update this informations');
         return;
+    }
+});
+
+
+//checkPassword
+router.post(checkPasswordRoute, async (req: RequestWithUser, res, next) => {
+    try
+    {
+        if(await checkPassword(req, res)){
+            return;
+        }
+        // res.status(500).json(false);
+    }
+    catch(err)
+    {
+        console.error(`Error while checking password`, err);
+        next(err);
     }
 });
 
