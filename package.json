@@ -4,9 +4,9 @@
   "repository": "https://github.com/ChristianoDc7/banking-app.git",
   "scripts": {
     "dev:backend": "cd ./backend && yarn dev",
-    "build:backend": "cd ./backend && yarn build",
+    "build:backend": "cd ./backend && yarn install && yarn build",
     "dev:frontend": "cd ./frontend && yarn dev",
-    "build:frontend": "cd ./backend && yarn build"
+    "build:frontend": "cd ./backend && yarn install && yarn build"
   },
   "author": "Christiano <Christianod97@gmail.com>",
   "license": "MIT"
