@@ -43,5 +43,5 @@ export const GetUser = async (id: number, auth = false) => {
 
 export const GetAllUsers = async (req: RequestWithPayload) => {
     const users = await userRepository.find();
-    return users?.map(user => _.omit(user, isAdmin(req?.payload?.id || 0) ? "password" : ["password", "amount"]))
+    return users?.map(user => _.omit(user, isAdmin(req?.payload?.id || 0) ? "password" : ["password", "amount", "role"]))
 }
