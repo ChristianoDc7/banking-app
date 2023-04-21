@@ -2,6 +2,8 @@ import { Spin } from 'antd'
 
 export const MainLoader = () => {
   return (
-    <Spin tip="Loading" size="large" />
+    <div className='center-flex full-width full-height' >
+      <Spin tip="Loading" size="large" />
+    </div>
   )
 }
