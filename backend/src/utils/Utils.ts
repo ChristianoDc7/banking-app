@@ -2,12 +2,13 @@ import { NextFunction, Response } from "express";
 import { UserEntities } from "../entities/UserEntities";
 import { RequestWithPayload } from "../types/userTypes";
 import { TransactionEntities } from "../entities/TransactionEntities";
+import _ from "lodash";
 
 export function verifyUserCreatePayload(user: UserEntities) {
 
     if ([user.username, user.password].every(v => typeof v === "string" && !!v.trim())
         && [1, 2].includes(Number(user.role))
-        && user.password.length === 4
+        && user.password.length === 4 && _.isInteger(Number(user.password))
     ) return true;
 
     return false;

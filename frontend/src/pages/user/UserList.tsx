@@ -1,39 +1,78 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useGetUsers } from '../../data/hooks/user/useGetUsers'
-import { Button, Space, Tag, Tooltip, Table, Modal } from 'antd'
-import { DeleteOutlined, EditOutlined, ExclamationCircleFilled } from '@ant-design/icons'
+import { Button, Space, Tag, Tooltip, Table, Modal, Row, App } from 'antd'
+import { DeleteOutlined, EditOutlined, ExclamationCircleFilled, UsergroupAddOutlined } from '@ant-design/icons'
 import { ColumnsType } from 'antd/es/table';
 import { TUser } from '../../types/User';
 import _ from 'lodash';
+import UserModal from './components/UserModal';
+import { useCreateUser } from '../../data/hooks/user/useCreateUser';
+import { useDeleteUser } from '../../data/hooks/user/useDeleteUser';
 
 const UserList = () => {
-	// const [idToDelete, setIdToDelete] = React.useState<number | null>(null)
-	const { data } = useGetUsers()
+	const { data, invalidateQuery } = useGetUsers()
+	const createUserMutation = useCreateUser()
+	const deleteUserMutation = useDeleteUser()
+
+	const [isModalVisible, setIsModalVisible] = React.useState(false);
+
 	const columns = useUserColumns({
 		onDelete(id) {
-			// setIdToDelete(id)
-			showConfirm()
+			showConfirm(id)
 		},
-		onEdit(id) { }
+		onEdit(user) {}
 	})
+	const { notification, message } = App.useApp();
 	const { confirm } = Modal;
 
-	const showConfirm = () => {
+	const showConfirm = (id: number) => {
 		confirm({
 			title: 'Do you really want to delete this user ?',
 			icon: <ExclamationCircleFilled />,
 			content: 'The actions are irreversible',
+			okButtonProps:{
+				loading: deleteUserMutation.isLoading
+			},
 			onOk() {
-				// setIdToDelete(null)
+				deleteUserMutation.mutate(id)
 			},
-			onCancel() {
-				// setIdToDelete(null)
-			},
+			onCancel() {},
 		});
 	};
 
+	const handleConfirm = (value: TUser) => {
+		createUserMutation.mutate(value)
+	}
+
+	useEffect(() => {
+		if (createUserMutation?.isSuccess) {
+			setIsModalVisible(false)
+			notification.success({
+				message: 'User created',
+			})
+			createUserMutation.reset()
+			invalidateQuery()
+		}
+	},[createUserMutation.isLoading])
+
+	useEffect(() => {
+		if (deleteUserMutation?.isSuccess) {
+			deleteUserMutation.reset()
+			notification.success({
+				message: 'User deleted',
+			})
+			invalidateQuery()
+		}
+	},[deleteUserMutation.isSuccess])
+
 	return (
-		<Table columns={columns} dataSource={data} />
+		<>
+			<Row style={{paddingBlock : "10px", display: 'flex', justifyContent: 'flex-end'}}>
+				<Button type="primary" onClick={()=>setIsModalVisible(true)} icon={<UsergroupAddOutlined />}>Add New User</Button>
+			</Row>
+			<Table columns={columns} dataSource={data} />
+			<UserModal visible={isModalVisible} onOk={handleConfirm} onCancel={()=>setIsModalVisible(false)} confirmLoading={createUserMutation?.isLoading}/>
+		</>
 	)
 }
 
