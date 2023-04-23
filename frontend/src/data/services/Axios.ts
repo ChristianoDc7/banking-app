@@ -3,11 +3,18 @@ import { RUNTIME_COOKIE_KEYS, deleteTokenCookie, getTokenCookie } from './AuthCo
 import { PageRoutes } from '../../config/PageRoutes';
 import Cookies from 'js-cookie'
 
-const backendApiUrl = "http://localhost:3000"
+const backendApiUrl = () => {
+	const { NODE_ENV, VITE_BACKEND_PRODUCTION, VITE_BACKEND_DEVELOPMENT } = import.meta.env;
+	if (NODE_ENV === 'production') {
+		return VITE_BACKEND_PRODUCTION;
+	} else {
+		return VITE_BACKEND_DEVELOPMENT;
+	}
+}
 
 // Create a new Axios instance with custom configurations
 const HttpModule: AxiosInstance = axios.create({
-	baseURL: backendApiUrl,
+	baseURL: backendApiUrl(),
 	headers: {
 		'Content-Type': 'application/json',
 		Authorization: `Bearer ${getTokenCookie()}`,

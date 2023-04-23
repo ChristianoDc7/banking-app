@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { ParamsDictionary } from 'express-serve-static-core';
@@ -31,4 +31,12 @@ app.get('/hello', verifyToken, (req: Request<ParamsDictionary, any, User>, res: 
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
+});
+
+/* Error handler middleware */
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  const statusCode = err.statusCode || 500;
+  console.error(err.message, err.stack);
+  res.status(statusCode).json({ message: err.message });
+  return;
 });
