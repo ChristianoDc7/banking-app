@@ -7,7 +7,7 @@ export type User = {
     username: string;
     password: string;
     role: string;
-    email: string;
+    email: string
 }
 
 export type RequestWithUser = Request<ParamsDictionary, any, UserEntities>
